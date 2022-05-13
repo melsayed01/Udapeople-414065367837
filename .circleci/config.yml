@@ -359,11 +359,11 @@ jobs:
 workflows:
   default:
     jobs:
-      - build-frontend:
-        context: SLACK_ACCESS_TOKEN
-      - build-backend:
-        context:
-          - SLACK_ACCESS_TOKEN
+      - build-frontend
+        # context: SLACK_ACCESS_TOKEN
+      - build-backend
+        # context:
+        #   - SLACK_ACCESS_TOKEN
       - test-frontend:
           requires: [build-frontend]
           context:
