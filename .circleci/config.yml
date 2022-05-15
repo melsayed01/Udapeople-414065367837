@@ -174,7 +174,7 @@ jobs:
     docker:
       # Docker image here
       - image: circleci/node:13.8.0
-    steps:sw 
+    steps:
       # Checkout code from git
       - checkout
       # Restore from cache
