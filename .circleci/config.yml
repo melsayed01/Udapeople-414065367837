@@ -234,7 +234,7 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - /mnt/d/Work\ Fule/Cloud/AWS/CICD/working-area/exercise/cdond-c3-projectstarte/.circleci/ansible/inventory.txt
+            - cdond-c3-projectstarte/.circleci/ansible/inventory.txt
       # Here's where you will add some code to rollback on failure
       - destroy_environment      
 
