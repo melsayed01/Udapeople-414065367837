@@ -3,18 +3,25 @@ version: 2.1
 orbs:
   slack: circleci/slack@4.1
 
-# commands:
-  # destroy-environment:
-  #   description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
-  #   parameters:
-  #     # Add parameter here   
-  #   steps:
-  #     - run:
-  #         name: Destroy environments
-  #         when: on_fail
-  #         command: |
-  #           # Your code here
-  #           exit 1
+commands:
+  destroy-environment:
+    description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
+    # parameters:
+    #   # Add parameter here   
+    # steps:
+    #   - run:
+    #       name: Destroy environments
+    #       when: on_fail
+    #       command: |
+    steps:
+        - run:
+            name: Destroy environment
+            # ${CIRCLE_WORKFLOW_ID} is a Built-in environment variable 
+            # ${CIRCLE_WORKFLOW_ID:0:7} takes the first 7 chars of the variable CIRCLE_CI_WORKFLOW_ID 
+            when: on_fail
+            command: |
+              aws cloudformation delete-stack --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
+              aws cloudformation delete-stack --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
 
   # revert-migrations:
   #   description: Revert the last migration if successfully run in the current workflow.
@@ -205,6 +212,7 @@ jobs:
               --template-file .circleci/files/backend.yml \
               --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
+              --region us-east-1 \
               --tags project=udapeople
       - run:
           name: Ensure front-end infrastructure exist
@@ -224,8 +232,9 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - D:\Work Fule\Cloud\AWS\CICD\working-area\exercise\cdond-c3-projectstarter/.circleci/ansible/inventory.txt
-      # Here's where you will add some code to rollback on failure      
+            - project/.circleci/ansible/inventory.txt
+      # Here's where you will add some code to rollback on failure
+      - destroy_environment      
 
 #   configure-infrastructure:
 #     docker:
@@ -384,11 +393,11 @@ workflows:
           requires: [build-frontend]
           context: 
             - SLACK_ACCESS_TOKEN
-      # - deploy-infrastructure:
-      #     requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-      #     filters:
-      #       branches:
-      #         only: [test-feature-branch]
+      - deploy-infrastructure:
+          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+          filters:
+            branches:
+              only: [initial]
       # - configure-infrastructure:
       #     requires: [deploy-infrastructure]
       # - run-migrations:
