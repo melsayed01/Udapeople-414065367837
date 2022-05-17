@@ -231,9 +231,6 @@ jobs:
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text >> .circleci/ansible/inventory.txt
             cat .circleci/ansible/inventory.txt
-            touch p1
-            touch .circleci/ansible/p2
-            pwd >> .circleci/ansible/p2
 
       - persist_to_workspace:
           root: ~/
@@ -242,22 +239,28 @@ jobs:
       # Here's where you will add some code to rollback on failure
       - destroy_environment      
 
-  # configure-infrastructure:
-  #   docker:
-  #     # Docker image here that supports Ansible
-  #     - image: python:3.7-alpine3.11
-  #   steps:
-  #     # Checkout code from git
-  #     - checkout
-  #     # Add ssh keys with fingerprint
-  #     - add_ssh_keys:
-  #           fingerprints: ["5e:bd:fd:af:f0:28:2a:bf:5b:41:14:91:b2:e1:6c:b0"]
+  configure-infrastructure:
+    docker:
+      # Docker image here that supports Ansible
+      - image: python:3.7-alpine3.11
+    steps:
+      # Checkout code from git
+      - checkout
+      # Add ssh keys with fingerprint
+      - add_ssh_keys:
+            fingerprints: ["4d:7f:05:98:54:b2:85:f9:a1:e3:59:0d:73:ed:1a:e3:70:d3:27:3a"]
 #       # attach workspace
-#       - run:
-#           name: Install dependencies
-#           command: |
-#             # Your code here
-#             exit 1
+      - attach_workspace:
+          at: ~/
+      - run: cat ~/project/.circleci/ansible/inventory.txt
+
+      - run:
+          name: Install dependencies
+          command: |
+          # name: Install Ansible
+          # command: |
+            # install the dependencies needed for your playbook
+            apk add --update ansible 
 #       - run:
 #           name: Configure server
 #           command: |
