@@ -230,11 +230,15 @@ jobs:
             aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text >> .circleci/ansible/inventory.txt
-            cat .circleci/ansible/inventory.txt  
+            cat .circleci/ansible/inventory.txt
+            touch P1
+            touch .circleci/ansible/P2
+            pwd
+
       - persist_to_workspace:
           root: ~/
           paths:
-            - inventory.txt
+            - .circleci/ansible/inventory.txt
       # Here's where you will add some code to rollback on failure
       - destroy_environment      
 
