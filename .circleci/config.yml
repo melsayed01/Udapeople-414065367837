@@ -253,12 +253,9 @@ jobs:
       - attach_workspace:
           at: ~/
       - run: cat ~/project/.circleci/ansible/inventory.txt
-
       - run:
           name: Install dependencies
           command: |
-          # name: Install Ansible
-          # command: |
             # install the dependencies needed for your playbook
             apk add --update ansible 
 #       - run:
