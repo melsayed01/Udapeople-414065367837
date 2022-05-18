@@ -256,7 +256,8 @@ jobs:
       - run:
           name: Install ansible/dependencies
           command: |
-            apk add --update ansible 
+            apk add --upgrade bash ansible openssh-client
+            # apk add --update ansible 
 
       - run:
           name: Configure server
