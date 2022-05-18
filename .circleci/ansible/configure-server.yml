@@ -36,4 +36,4 @@
     - setup:
   
   roles:
-    - configure-servere
+    - configure-server

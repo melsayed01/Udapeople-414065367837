@@ -257,13 +257,12 @@ jobs:
           name: Install ansible/dependencies
           command: |
             apk add --update ansible 
-            
+
       - run:
           name: Configure server
           command: |
             cd .circleci/ansible
-            ansible-playbook -i inventory.txt configure-server.yml
-      - destroy_environment      
+            ansible-playbook -i inventory.txt configure-server.yml      
 
 #   run-migrations:
 #     docker:
