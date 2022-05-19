@@ -7,13 +7,6 @@ orbs:
 commands:
   destroy_environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
-    # parameters:
-    #   # Add parameter here   
-    # steps:
-    #   - run:
-    #       name: Destroy environments
-    #       when: on_fail
-    #       command: |
     steps:
       - run:
           name: Destroy environment
@@ -23,6 +16,19 @@ commands:
           command: |
             aws cloudformation delete-stack --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
             aws cloudformation delete-stack --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
+  
+  install-awscli:
+    description: To Install AWS-CLI.
+    steps:
+      - run:
+          name: Install AWS-CLI 
+          command: |
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            sudo apt install unzip
+            unzip awscliv2.zip
+            sudo ./aws/install
+
+
 
   # revert-migrations:
   #   description: Revert the last migration if successfully run in the current workflow.
@@ -246,7 +252,7 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
-      # - install_awscli
+      - install-awscli
       # Add ssh keys with fingerprint
       - add_ssh_keys:
             fingerprints: ["0e:5d:2c:e3:9d:bc:70:fc:9e:00:c3:b4:fc:57:3f:2c"]
@@ -266,7 +272,7 @@ jobs:
             cd .circleci/ansible
             ansible-playbook -i inventory.txt configure-server.yml
       # Here's where you will add some code to rollback on failure
-      # - destroy_environment      
+      - destroy_environment      
       
 
   run-migrations:
@@ -274,19 +280,20 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      # - install_awscli
+      - install_awscli
       # Restore from cache
       - restore_cache:
           keys: [backend-build]
       - run:
           name: Run and save the migration evidance
           command: |
-            cd backend
-            pwd
             sudo apt -y install update
             npm audit fix
+            cd backend
             npm install
+            pwd
             npm run migrations > migrations_dump.txt
+            pwd
       - run:
           name: Send migration status to 3rd party (kvdb.io)
           command: |   
@@ -295,7 +302,7 @@ jobs:
                 curl -d '1' https://kvdb.io/${key_kvdb}/migration_${CIRCLE_WORKFLOW_ID:0:7}
               fi
      # Here's where you will add some code to rollback on failure
-      # - destroy_environment      
+      - destroy_environment      
 
 #   deploy-frontend:
 #     docker:
