@@ -280,7 +280,7 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - install_awscli
+      - install-awscli
       # Restore from cache
       - restore_cache:
           keys: [backend-build]
