@@ -275,13 +275,15 @@ jobs:
     steps:
       - checkout
       # - install_awscli
-      # Restore from cache
-      # - restore_cache:
-      #     keys: [backend-build]
+      Restore from cache
+      - restore_cache:
+          keys: [backend-build]
       - run:
           name: Run and save the migration evidance
           command: |
             cd backend
+            yum -y istall update
+            npm audit fix
             npm install
             # npm audit fix --audit-level=critical --force
             # npm audit fix --force
