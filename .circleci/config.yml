@@ -282,7 +282,7 @@ jobs:
           name: Run and save the migration evidance
           command: |
             cd backend
-            yum -y install update
+            sudo apt -y install update
             npm audit fix
             npm install
             # npm audit fix --audit-level=critical --force
