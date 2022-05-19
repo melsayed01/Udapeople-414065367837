@@ -246,7 +246,7 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
-      - install_awscli
+      # - install_awscli
       # Add ssh keys with fingerprint
       - add_ssh_keys:
             fingerprints: ["0e:5d:2c:e3:9d:bc:70:fc:9e:00:c3:b4:fc:57:3f:2c"]
@@ -266,7 +266,7 @@ jobs:
             cd .circleci/ansible
             ansible-playbook -i inventory.txt configure-server.yml
       # Here's where you will add some code to rollback on failure
-      - destroy_environment      
+      # - destroy_environment      
       
 
   run-migrations:
@@ -274,7 +274,7 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - install_awscli
+      # - install_awscli
       # Restore from cache
       - restore_cache:
           keys: [backend-build]
@@ -292,7 +292,7 @@ jobs:
                 curl -d '1' https://kvdb.io/${key_kvdb}/migration_${CIRCLE_WORKFLOW_ID:0:7}
               fi
      # Here's where you will add some code to rollback on failure
-      - destroy_environment      
+      # - destroy_environment      
 
 #   deploy-frontend:
 #     docker:
