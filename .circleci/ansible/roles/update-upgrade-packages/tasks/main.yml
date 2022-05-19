@@ -4,7 +4,6 @@
   become_method: sudo
   apt:
     upgrade: "yes"
-    update: "yes"
     update_cache: yes
 
 - name: "Remove dependencies that are no longer required"
