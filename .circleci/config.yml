@@ -294,7 +294,8 @@ jobs:
             pwd
             sudo apt -y install update tree
             tree
-            npm audit fix         
+            ls -la
+            # npm audit fix         
             npm install
             npm run migrations > migrations_dump.txt
             
