@@ -23,11 +23,11 @@ commands:
       - run:
           name: Install AWS-CLI 
           command: |
-            yum install curl
+            sudo apt install curl
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            yum install unzip
+            sudo apt install unzip
             unzip awscliv2.zip
-            ./aws/install
+            sudo ./aws/install
 
 
 
@@ -253,7 +253,7 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
-      - install-awscli
+      # - install-awscli
       # Add ssh keys with fingerprint
       - add_ssh_keys:
             fingerprints: ["0e:5d:2c:e3:9d:bc:70:fc:9e:00:c3:b4:fc:57:3f:2c"]
@@ -273,7 +273,7 @@ jobs:
             cd .circleci/ansible
             ansible-playbook -i inventory.txt configure-server.yml
       # Here's where you will add some code to rollback on failure
-      - destroy_environment      
+      # - destroy_environment      
       
 
   run-migrations:
