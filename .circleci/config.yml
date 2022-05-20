@@ -292,7 +292,8 @@ jobs:
             pwd
             cd backend
             pwd
-            sudo apt -y install update tree
+            # sudo apt -y install update
+            sudo apt -y install tree
             tree
             ls -la
             # npm audit fix         
