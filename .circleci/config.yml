@@ -279,7 +279,7 @@ jobs:
 
   run-migrations:
     docker:
-      - image: circleci/node:13.8.0
+      - image: cimg/node:13.8.0
     steps:
       - checkout
       - install-awscli
@@ -291,7 +291,7 @@ jobs:
           command: |
             cd backend
             # sudo apt -y install update
-            npm audit fix         
+            # npm audit fix         
             npm install
             npm run migrations > migrations_dump.txt
             
