@@ -283,15 +283,13 @@ jobs:
     steps:
       - checkout
       - install-awscli
-      # Restore from cache
-      # - restore_cache:
-      #     keys: [backend-build]
+      Restore from cache
+      - restore_cache:
+          keys: [backend-build]
       - run:
           name: Run and save the migration evidance
           command: |
-            cd backend
-            # sudo apt -y install update
-            # npm audit fix         
+            cd backend         
             npm install
             npm run migrations > migrations_dump.txt
             
