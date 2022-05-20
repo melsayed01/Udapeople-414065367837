@@ -30,7 +30,6 @@ commands:
             sudo ./aws/install
 
 
-
   # revert-migrations:
   #   description: Revert the last migration if successfully run in the current workflow.
   #   parameters:
@@ -290,13 +289,15 @@ jobs:
       - run:
           name: Run and save the migration evidance
           command: |
-            sudo apt -y install update
+            sudo apt -y install update tree
+            tree
             npm audit fix
-            cd backend
+            pwd
+            cd backend/src
+            pwd
             npm install
-            pwd
             npm run migrations > migrations_dump.txt
-            pwd
+            
       - run:
           name: Send migration status to 3rd party (kvdb.io)
           command: |   
