@@ -257,15 +257,18 @@ jobs:
       # Add ssh keys with fingerprint
       - add_ssh_keys:
             fingerprints: ["0e:5d:2c:e3:9d:bc:70:fc:9e:00:c3:b4:fc:57:3f:2c"]
-#       # attach workspace
+      # attach workspace
       - attach_workspace:
           at: ~/
 
       - run:
           name: Install ansible/dependencies
           command: |
-            apk add --upgrade bash ansible openssh-client
-            # apk add --update ansible 
+            apk add --upgrade bash ansible openssh-client unzip curl
+            apk add --update curl ansible 
+            apk curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            apk unzip awscliv2.zip
+            apk ./aws/install
 
       - run:
           name: Configure server
@@ -273,7 +276,7 @@ jobs:
             cd .circleci/ansible
             ansible-playbook -i inventory.txt configure-server.yml
       # Here's where you will add some code to rollback on failure
-      # - destroy_environment      
+      - destroy_environment      
       
 
   run-migrations:
