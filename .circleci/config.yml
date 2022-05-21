@@ -51,10 +51,8 @@ commands:
       - run:
           name: Install Python
           command: |
-            sudo apt-get install software-properties-common -y
-            sudo add-apt-repository ppa:deadsnakes/ppa -y
             sudo apt-get update -y
-            sudo apt-get install python3.8 -y
+            sudo apt-get install python3.7 -y
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -69,6 +67,7 @@ commands:
           # Add when this will run
           when: on_fail
           command: |
+            sudo apt install curl
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
             SUCCESS=$(curl -insecure https://kvdb.io/${key_kvdb}/migration_${CIRCLE_WORKFLOW_ID:0:7})
             if(( $SUCCESS==1 )); 
