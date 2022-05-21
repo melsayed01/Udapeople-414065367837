@@ -62,7 +62,7 @@ commands:
     steps:
       - run:
           name: Install nodejs
-          commands: |
+          command: |
             sudo apt update -y
             sudo apt install nodejs -y
            
