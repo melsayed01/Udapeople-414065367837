@@ -40,21 +40,21 @@ commands:
       - run:
           name: install Ansible
           command: |
-            sudo apt update
-            sudo apt install software-properties-common
-            sudo add-apt-repository --yes --update ppa:ansible/ansible
+            sudo apt update -y
+            sudo apt install software-properties-common -y
+            sudo add-apt-repository --yes --update ppa:ansible/ansible -y
             sudo apt install ansible -y
 
   install-python:
     description: To install Python
-      steps:
-        run:
-          name: Install Python
-          command: |
-            sudo apt-get install software-properties-common
-            sudo add-apt-repository ppa:deadsnakes/ppa
-            sudo apt-get update
-            sudo apt-get install python3.8 -y
+    steps:
+      run:
+        name: Install Python
+        command: |
+          sudo apt-get install software-properties-common -y
+          sudo add-apt-repository ppa:deadsnakes/ppa -y
+          sudo apt-get update -y
+          sudo apt-get install python3.8 -y
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
