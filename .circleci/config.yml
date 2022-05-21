@@ -57,6 +57,16 @@ commands:
             # sudo apt update -y
             sudo apt install python3.8 -y
 
+  install-nodejs
+    description: To install nodejs
+    steps:
+      - run:
+          name: Install nodejs
+          commands: |
+            sudo apt update -y
+            sudo apt install nodejs -y
+           
+
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
     parameters:

@@ -1,0 +1,26 @@
+---
+- name: "Backend App dir"
+  file: true
+    path: ~/backend-app
+    state: directory
+
+- name: "Untar app files" 
+  unarchive:
+    src: artifact.tar.gz
+    dest: ~/backend-app
+
+- name: "start the app"
+  shell: |
+    cd ~/backend-app
+    npm install
+    cd dist
+    pm2 stop default
+    pm2 start main.js
+  register: execute_node
+
+# - name: "Add pm2 to path & startup services"
+#   become: true
+#   shell: |
+#     env PATH=$PATH:/usr/local/bin
+#     pm2 startup systemd -u ubuntu --hp /home/ubuntu
+
