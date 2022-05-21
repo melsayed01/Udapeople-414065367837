@@ -17,7 +17,7 @@ commands:
           when: on_fail
           command: |
             echo "Destroying environment: << parameters.workflow_id >> "
-            aws s3 sync . s3://mybucket-${CIRCLE_WORKFLOW_ID:0:7} --delete
+            aws s3 rb s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --force 
             aws cloudformation delete-stack --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
             aws cloudformation delete-stack --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
   
@@ -43,7 +43,18 @@ commands:
             sudo apt update
             sudo apt install software-properties-common
             sudo add-apt-repository --yes --update ppa:ansible/ansible
-            sudo apt install ansible
+            sudo apt install ansible -y
+
+  install-python:
+    description: To install Python
+      steps:
+        run:
+          name: Install Python
+          command: |
+            sudo apt-get install software-properties-common
+            sudo add-apt-repository ppa:deadsnakes/ppa
+            sudo apt-get update
+            sudo apt-get install python3.8 -y
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -362,6 +373,7 @@ jobs:
     steps:
       - checkout
       - install-awscli
+      - install-python
       - install-ansible
       - attach_workspace:
           at: ~/
@@ -377,7 +389,7 @@ jobs:
           name: Deploy backend
           command: |
               cd backend
-              npm i
+              npm install
               npm run build
               cd ..
               # Zip the directory
