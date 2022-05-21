@@ -57,7 +57,7 @@ commands:
             # sudo apt update -y
             sudo apt install python3.8 -y
 
-  install-nodejs
+  install-nodejs:
     description: To install nodejs
     steps:
       - run:
