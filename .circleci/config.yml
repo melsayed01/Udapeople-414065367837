@@ -17,6 +17,7 @@ commands:
           when: on_fail
           command: |
             echo "Destroying environment: << parameters.workflow_id >> "
+            aws s3 sync . s3://mybucket-${CIRCLE_WORKFLOW_ID:0:7} --delete
             aws cloudformation delete-stack --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
             aws cloudformation delete-stack --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
   
@@ -26,12 +27,23 @@ commands:
       - run:
           name: Install AWS-CLI 
           command: |
+            sudo apt update
             sudo apt install curl
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             sudo apt install unzip
             unzip awscliv2.zip
             sudo ./aws/install
 
+  install-ansible:
+    description: To insatll Ansible.
+    steps:
+      - run:
+          name: install Ansible
+          command: |
+            sudo apt update
+            sudo apt install software-properties-common
+            sudo add-apt-repository --yes --update ppa:ansible/ansible
+            sudo apt install ansible
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -40,7 +52,6 @@ commands:
       workflow_ID:
         type: string
         default: ${CIRCLE_WORKFLOW_ID:0:7}
-
     steps:
       - run:
           name: Revert migrations
@@ -55,8 +66,6 @@ commands:
               npm install
               npm run migration:revert
             fi
-  
-
 
 jobs:
   build-frontend:
@@ -323,7 +332,6 @@ jobs:
               # sudo apt -y install update 
               cd frontend
               npm install
-
       - run:
           name: Get backend url
           command: |
@@ -348,23 +356,39 @@ jobs:
       - revert-migrations
       - destroy_environment  
 
-#   deploy-backend:
-#     docker:
-#       # Docker image here that supports Ansible
-#     steps:
-#       # Checkout code from git
-#       # Add ssh keys with fingerprint
-#       # attach workspace
-#       - run:
-#           name: Install dependencies
-#           command: |
-#             # your code here
-#       - run:
-#           name: Deploy backend
-#           command: |
-#             # your code here
-#       # Here's where you will add some code to rollback on failure  
-
+  deploy-backend:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - install-awscli
+      - install-ansible
+      - attach_workspace:
+          at: ~/
+      - restore_cache:
+          keys: [backend-build]
+      - add_ssh_keys:
+          fingerprints: ["0e:5d:2c:e3:9d:bc:70:fc:9e:00:c3:b4:fc:57:3f:2c"]
+      # - run:
+      #     name: Install dependencies
+      #     command: |
+      #       # your code here
+      - run:
+          name: Deploy backend
+          command: |
+              cd backend
+              npm i
+              npm run build
+              cd ..
+              # Zip the directory
+              tar -C backend -czvf artifact.tar.gz .
+              cd .circleci/ansible
+              echo "Contents  of the inventory.txt file is -------"
+              cat inventory.txt
+              ansible-playbook -i inventory.txt deploy-backend.yml
+      # Here's where you will add some code to rollback on failure  
+      - revert-migrations
+      - destroy_environment
 #   smoke-test:
 #     docker:
 #       # Lightweight Docker image 
@@ -459,8 +483,8 @@ workflows:
           requires: [configure-infrastructure]
       - deploy-frontend:
           requires: [run-migrations]
-      # - deploy-backend:
-      #     requires: [run-migrations]
+      - deploy-backend:
+          requires: [run-migrations]
       # - smoke-test:
       #     requires: [deploy-backend, deploy-frontend]
       # - cloudfront-update:
