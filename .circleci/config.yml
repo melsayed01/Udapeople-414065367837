@@ -27,10 +27,10 @@ commands:
       - run:
           name: Install AWS-CLI 
           command: |
-            sudo apt update
-            sudo apt install curl
+            sudo apt update -y
+            sudo apt install curl -y
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            sudo apt install unzip
+            sudo apt install unzip -y
             unzip awscliv2.zip
             sudo ./aws/install
 
@@ -52,7 +52,7 @@ commands:
           name: Install Python
           command: |
             sudo apt update -y
-            sudo apt install software-properties-common
+            sudo apt install software-properties-common -y
             sudo add-apt-repository ppa:deadsnakes/ppa -y
             # sudo apt update -y
             sudo apt install python3.8 -y
