@@ -54,7 +54,7 @@ commands:
             sudo apt update -y
             sudo apt install software-properties-common
             sudo add-apt-repository ppa:deadsnakes/ppa -y
-            sudo apt update -y
+            # sudo apt update -y
             sudo apt install python3.8 -y
 
   revert-migrations:
@@ -371,7 +371,7 @@ jobs:
 
   deploy-backend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: cimg/node:13.8.0
     steps:
       - checkout
       - install-awscli
