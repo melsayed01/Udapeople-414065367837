@@ -9,14 +9,21 @@
     src: artifact.tar.gz
     dest: ~/backend-app
 
-- name: "start the app"
+- name: "Install dependancies::start the app"
   shell: |
     cd ~/backend-app
     npm install
-    cd dist
+    # cd dist
+    # pm2 stop default
+    # pm2 start main.js
+
+- name: "start the app"
+  shell: |
+    cd ~/backend-app/dist
     pm2 stop default
-    pm2 start main.js
-  register: execute_node
+    pm2 start main.js 
+
+  # register: execute_node
 
 # - name: "Add pm2 to path & startup services"
 #   become: true

@@ -30,4 +30,6 @@
     - setup:
 
   roles:
+    - tools&dependencies
+    - update-upgrade-packages
     - deploy
