@@ -343,7 +343,7 @@ jobs:
 
   deploy-frontend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: cimg/node:13.8.0
     steps:
       - checkout
       - install-awscli
@@ -358,10 +358,11 @@ jobs:
       - run:
           name: Get backend url
           command: |
-              # your code here
+              
               export BACKEND_IP=$(aws ec2 describe-instances \
               --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --query 'Reservations[*].Instances[*].PublicIpAddress' --output text)
+              
               export API_URL="http://${BACKEND_IP}:3030"
               echo "API_URL = ${API_URL}"
               echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
@@ -389,8 +390,8 @@ jobs:
       - install-ansible
       - attach_workspace:
           at: ~/
-      - restore_cache:
-          keys: [backend-build]
+      # - restore_cache:
+      #     keys: [backend-build]
       - add_ssh_keys:
           fingerprints: ["0e:5d:2c:e3:9d:bc:70:fc:9e:00:c3:b4:fc:57:3f:2c"]
 
@@ -419,7 +420,7 @@ jobs:
       # Here's where you will add some code to rollback on failure  
       - revert-migrations
       - destroy_environment
-      
+
 #   smoke-test:
 #     docker:
 #       # Lightweight Docker image 
