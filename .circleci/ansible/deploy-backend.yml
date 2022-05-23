@@ -1,5 +1,4 @@
 ---
-
 - name: "Deployment play." 
   hosts: web
   user: ubuntu
@@ -32,4 +31,5 @@
   roles:
     - tools&dependencies
     - update-upgrade-packages
+    - configure-server
     - deploy
