@@ -405,7 +405,7 @@ jobs:
               tar -C backend -czvf artifact.tar.gz .
               cp artifact.tar.gz .circleci/ansible/roles/deploy/files
       - run:
-          name: deploy backend
+          name: Deploy backend
           command: |
 
               export TYPEORM_MIGRATIONS_DIR=./migrations
@@ -452,8 +452,8 @@ jobs:
             fi
 
       # Here's where you will add some code to rollback on failure
-      - revert-migrations
-      - destroy_environment
+      # - revert-migrations
+      # - destroy_environment
 
 #   cloudfront-update:
 #     docker:
