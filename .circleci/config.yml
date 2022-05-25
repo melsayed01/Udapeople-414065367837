@@ -447,11 +447,7 @@ jobs:
           command: |
             sleep 60
             FRONTEND_WEBSITE=http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-1.amazonaws.com
-            FRONTEND_WEBSITE_1=http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-${AWS_DEFAULT_REGION}.amazonaws.com
-            echo FRONTEND_WEBSITE
-            echo FRONTEND_WEBSITE_1
             echo $FRONTEND_WEBSITE
-            echo "$FRONTEND_WEBSITE"
             if curl -s $FRONTEND_WEBSITE | grep "Welcome"
             then
               exit 0
@@ -460,8 +456,8 @@ jobs:
             fi
 
       # Here's where you will add some code to rollback on failure
-      # - revert-migrations
-      # - destroy_environment
+      - revert-migrations
+      - destroy_environment
 
 #   cloudfront-update:
 #     docker:
