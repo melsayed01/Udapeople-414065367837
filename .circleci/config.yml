@@ -486,7 +486,7 @@ jobs:
       - revert-migrations
       - destroy_environment
 
-cleanup:
+  cleanup:
     docker:
       - image: cimg/node:13.8.0
     steps:
