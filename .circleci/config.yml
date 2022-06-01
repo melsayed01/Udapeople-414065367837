@@ -310,7 +310,6 @@ jobs:
           command: |
             cd .circleci/ansible
             ansible-playbook -i inventory.txt configure-server.yml
-      # Here's where you will add some code to rollback on failure
       - destroy_environment      
       
 
@@ -333,13 +332,13 @@ jobs:
       - run:
           name: Send migration status to 3rd party (kvdb.io)
           command: |
-              #Y=$()   
-              if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
-              then
-                echo ${CIRCLE_WORKFLOW_ID:0:7}
-                curl https://kvdb.io/${key_kvdb}/migration_"${CIRCLE_WORKFLOW_ID:0:7}" -d "1"
-              fi
-     # Here's where you will add some code to rollback on-failure
+            pwd   
+            if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
+            then
+              echo ${CIRCLE_WORKFLOW_ID:0:7}
+              curl https://kvdb.io/${key_kvdb}/migration_"${CIRCLE_WORKFLOW_ID:0:7}" -d "1"
+            fi
+   
       - revert-migrations
       - destroy_environment      
 
@@ -493,12 +492,6 @@ jobs:
     steps:
       - checkout
       - install-awscli
-      # - run:
-      #     name: Get old stack workflow id
-      #     command: |
-      #       # your code here
-      #       export OldWorkflowID="the id here"
-      #       export STACKS=[] #put the list of stacks here
       - run:
           name: List stacks names
           command: |
@@ -559,7 +552,7 @@ workflows:
           requires: [run-migrations]
       - smoke-test:
           requires: [deploy-backend, deploy-frontend]
-      - cloudfront-update:
-          requires: [smoke-test]
-      - cleanup:
-          requires: [cloudfront-update]
+      # - cloudfront-update:
+      #     requires: [smoke-test]
+      # - cleanup:
+      #     requires: [cloudfront-update]
