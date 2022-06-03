@@ -39,13 +39,13 @@ Resources:
         - Key: Name
           Value: !Sub backend-${ID}
 
-  EIP:
-    Type: AWS::EC2::EIP
-    Properties:
-      InstanceId: !Ref EC2Instance
+  # EIP:
+  #   Type: AWS::EC2::EIP
+  #   Properties:
+  #     InstanceId: !Ref EC2Instance
   
   IPAssoc:
     Type: AWS::EC2::EIPAssociation
     Properties:
       InstanceId: !Ref EC2Instance
-      EIP: !Ref EIP
+      EIP: eipalloc-09a9afffff36fb3ac
