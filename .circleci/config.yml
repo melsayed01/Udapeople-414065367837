@@ -288,10 +288,12 @@ jobs:
   configure-infrastructure:
     docker:
       # Docker image here that supports Ansible
-      - image: python:3.7-alpine3.11
+      # - image: python:3.7-alpine3.11
+      - image: cimg/node:13.8.0
     steps:
       # Checkout code from git
       - checkout
+      - install-ansible
       - install-awscli
       # Add ssh keys with fingerprint
       - add_ssh_keys:
@@ -299,19 +301,20 @@ jobs:
       # attach workspace
       - attach_workspace:
           at: ~/
-      - run:
-          name: Install ansible/dependencies
-          command: |
-            apk add --upgrade bash ansible openssh-client unzip curl 
-            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            ./aws/install
+      # - run:
+      #     name: Install ansible/dependencies
+      #     command: |
+      #       apk add --upgrade bash ansible openssh-client unzip curl 
+      #       curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+      #       unzip awscliv2.zip
+      #       ./aws/install
 
       - run:
           name: Configure server
           command: |
             cd .circleci/ansible
             ansible-playbook -i inventory.txt configure-server.yml
+            
       - destroy_environment      
       
 
