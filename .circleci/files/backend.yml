@@ -48,4 +48,4 @@ Resources:
     Type: AWS::EC2::EIPAssociation
     Properties:
       InstanceId: !Ref EC2Instance
-      EIP: "54.209.77.3"
+      EIP: !Ref EIP
