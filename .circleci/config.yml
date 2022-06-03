@@ -301,14 +301,6 @@ jobs:
       # attach workspace
       - attach_workspace:
           at: ~/
-      # - run:
-      #     name: Install ansible/dependencies
-      #     command: |
-      #       apk add --upgrade bash ansible openssh-client unzip curl 
-      #       curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-      #       unzip awscliv2.zip
-      #       ./aws/install
-
       - run:
           name: Configure server
           command: |
@@ -503,7 +495,6 @@ jobs:
               aws s3 rb "s3://udapeople-${OldWorkflowID}" --force
               aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
               aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}"
-              aws cloudformation delete-stack --stack-name InitialStack
 
 workflows:
   default:
