@@ -8,7 +8,7 @@ https://udapeople-d0aa550.s3.amazonaws.com/index.html#/employees
 https://d27pat8130dhgi.cloudfront.net/#/employees
 
 4. Public URLs to deployed application back-end in EC2 [URL04]
-
+http://ec2-54-160-153-236.compute-1.amazonaws.com
 
 5. Public URL to your Prometheus Server [URL05]
 http://ec2-54-209-77-3.compute-1.amazonaws.com:9090/targets
