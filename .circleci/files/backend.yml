@@ -49,7 +49,7 @@ Resources:
   #   Properties:
   #     InstanceId: !Ref EC2Instance
   #     EIP: eipalloc-09a9afffff36fb3ac
-# Outputs:
-#   BackendURL:
-#     Description: host public IP URL for the created instance
-#     Value: !GetAtt EC2Instance.PublicDnsName
+Outputs:
+  BackendURL:
+    Description: host public IP URL for the created instance
+    Value: !GetAtt EC2Instance.PublicDnsName
