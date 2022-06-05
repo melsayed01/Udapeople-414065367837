@@ -1,0 +1,14 @@
+1. Public Url to GitHub repository [URL01]
+https://github.com/melsayed01/Udapeople-414065367837.git
+
+2. Public URL for your S3 Bucket (green candidate front-end) [URL02]
+https://udapeople-d0aa550.s3.amazonaws.com/index.html#/employees
+
+3. Public URL for your CloudFront distribution (blue production front-end) [URL03]
+https://d27pat8130dhgi.cloudfront.net/#/employees
+
+4. Public URLs to deployed application back-end in EC2 [URL04]
+
+
+5. Public URL to your Prometheus Server [URL05]
+http://ec2-54-209-77-3.compute-1.amazonaws.com:9090/targets
